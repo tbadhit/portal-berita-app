@@ -9,31 +9,32 @@ class Article {
   String content;
 
   Article(
-      {this.source,
-      this.author,
-      this.title,
-      this.description,
-      this.url,
-      this.urlToImage,
-      this.publishedAt,
-      this.content});
+      {required this.source,
+      required this.author,
+      required this.title,
+      required this.description,
+      required this.url,
+      required this.urlToImage,
+      required this.publishedAt,
+      required this.content});
 
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
         source: Source.fromJson(json['source']),
-        author: json['author'],
-        title: json['title'],
-        description: json['description'],
-        url: json['url'],
-        urlToImage: json['urlToImage'],
-        publishedAt: json['publishedAt'],
-        content: json['content']);
+        author: json['author'] ?? "null",
+        title: json['title'] ?? "null",
+        description: json['description'] ?? "null",
+        url: json['url'] ?? "null",
+        urlToImage: json['urlToImage'] ??
+            "https://www.balitbangham.go.id/po-content/po-upload/news-default.jpg",
+        publishedAt: json['publishedAt'] ?? "null",
+        content: json['content'] ?? "null");
   }
 }
 
 class Source {
-  String id;
-  String name;
+  String? id;
+  String? name;
   Source({this.id, this.name});
 
   factory Source.fromJson(Map<String, dynamic> json) {

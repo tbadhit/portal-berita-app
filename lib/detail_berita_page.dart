@@ -1,22 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:portal_berita_app/model/berita_item.dart';
 
 class DetailBeritaPage extends StatefulWidget {
-  String author;
-  String title;
-  String description;
-  String url;
-  String urlToImage;
-  String publishedAt;
-  String content;
+  final Article article;
 
-  DetailBeritaPage(
-      {this.author,
-      this.title,
-      this.description,
-      this.url,
-      this.urlToImage,
-      this.publishedAt,
-      this.content});
+  const DetailBeritaPage({Key? key, required this.article}) : super(key: key);
 
   @override
   _DetailBeritaPageState createState() => _DetailBeritaPageState();
@@ -40,7 +28,7 @@ class _DetailBeritaPageState extends State<DetailBeritaPage> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        child: Image.network(widget.urlToImage),
+                        child: Image.network(widget.article.urlToImage),
                       ),
                       Padding(
                         padding: EdgeInsets.all(20.0),
@@ -48,10 +36,10 @@ class _DetailBeritaPageState extends State<DetailBeritaPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text("${widget.content}"),
+                            Text("${widget.article.content}"),
                             Padding(
                               padding: EdgeInsets.all(10.0),
-                              child: Text("${widget.publishedAt}"),
+                              child: Text("${widget.article.publishedAt}"),
                             )
                           ],
                         ),

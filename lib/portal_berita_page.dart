@@ -9,17 +9,17 @@ import 'package:portal_berita_app/model/berita_item.dart';
 // Mengubah responsenya ke objek dart
 // Ambil datanya
 class PortalBeritaPage extends StatefulWidget {
-  final String title;
+  final String? title;
 
-  const PortalBeritaPage({Key key, this.title}) : super(key: key);
+  const PortalBeritaPage({Key? key, this.title}) : super(key: key);
 
   @override
   _PortalBeritaPageState createState() => _PortalBeritaPageState();
 }
 
 class _PortalBeritaPageState extends State<PortalBeritaPage> {
-  Future<List<Article>> getData(String newsType) async {
-    List<Article> list;
+  Future<List<Article>?> getData(String? newsType) async {
+    List<Article>? list;
     String url =
         "https://newsapi.org/v2/top-headlines?country=id&apiKey=4e74bb32689b4f12b2e26cee1ca02dc0";
     // http headers bukan bagian dari URL
@@ -35,7 +35,7 @@ class _PortalBeritaPageState extends State<PortalBeritaPage> {
       list = result.map<Article>((json) => Article.fromJson(json)).toList();
     }
 
-    print("List Size ${list.length}");
+    print("List Size ${list!.length}");
     return list;
   }
 
@@ -43,7 +43,7 @@ class _PortalBeritaPageState extends State<PortalBeritaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(widget.title!),
           backgroundColor: Colors.black87,
         ),
         body: FutureBuilder(
@@ -56,7 +56,7 @@ class _PortalBeritaPageState extends State<PortalBeritaPage> {
         ));
   }
 
-  Widget listViewWidget(List<Article> article) {
+  Widget listViewWidget(article) {
     return Container(
       child: ListView.builder(
         padding: EdgeInsets.all(2.0),
@@ -68,10 +68,7 @@ class _PortalBeritaPageState extends State<PortalBeritaPage> {
               onTap: () {
                 var movePage = MaterialPageRoute(
                     builder: (contex) => DetailBeritaPage(
-                          title: article[position].title,
-                          urlToImage: article[position].urlToImage,
-                          content: article[position].content,
-                          publishedAt: article[position].publishedAt,
+                          article: article[position],
                         ));
                 Navigator.push(context, movePage);
               },
