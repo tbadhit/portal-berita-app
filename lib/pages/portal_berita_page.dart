@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:portal_berita_app/detail_berita_page.dart';
 import 'package:portal_berita_app/model/berita_item.dart';
+import 'package:portal_berita_app/service/service.dart';
+
+import 'detail_berita_page.dart';
 
 // Membuat request network
 // Mengubah responsenya ke objek dart
@@ -18,26 +17,7 @@ class PortalBeritaPage extends StatefulWidget {
 }
 
 class _PortalBeritaPageState extends State<PortalBeritaPage> {
-  Future<List<Article>?> getData(String? newsType) async {
-    List<Article>? list;
-    String url =
-        "https://newsapi.org/v2/top-headlines?country=id&apiKey=4e74bb32689b4f12b2e26cee1ca02dc0";
-    // http headers bukan bagian dari URL
-    var response =
-        await http.get(Uri.parse(url), headers: {"Accept": "application/json"});
-
-    print(response.body);
-    if (response.statusCode == 200) {
-      // decode = Mengubah data json menjadi array
-      var data = json.decode(response.body);
-      var result = data['articles'] as List;
-      print(result);
-      list = result.map<Article>((json) => Article.fromJson(json)).toList();
-    }
-
-    print("List Size ${list!.length}");
-    return list;
-  }
+  final service = Service();
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +27,16 @@ class _PortalBeritaPageState extends State<PortalBeritaPage> {
           backgroundColor: Colors.black87,
         ),
         body: FutureBuilder(
-          future: getData(widget.title),
+          future: service.getData(),
           builder: (context, snapshot) {
             return snapshot.data != null
-                ? listViewWidget(snapshot.data)
+                ? listViewWidget(snapshot.data as List<Article>)
                 : Center(child: CircularProgressIndicator());
           },
         ));
   }
 
-  Widget listViewWidget(article) {
+  Widget listViewWidget(List<Article> article) {
     return Container(
       child: ListView.builder(
         padding: EdgeInsets.all(2.0),
@@ -111,13 +91,18 @@ class _PortalBeritaPageState extends State<PortalBeritaPage> {
                           padding: EdgeInsets.only(bottom: 10, left: 15),
                           child: Align(
                             alignment: Alignment.bottomLeft,
-                            child: Text(
-                              article[position].author,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.bold),
+                            child: Container(
+                              width: 100,
+                              child: Text(
+                                article[position].author,
+                                textAlign: TextAlign.start,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),

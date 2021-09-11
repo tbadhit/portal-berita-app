@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'portal_berita_page.dart';
+import 'package:portal_berita_app/pages/portal_berita_page.dart';
 
 void main() {
   runApp(MyApp());
